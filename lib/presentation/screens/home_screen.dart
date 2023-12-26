@@ -201,7 +201,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
             ElevatedButton(
               onPressed: () {
                 // Navegar a la pantalla de reglas
-                GoRouter.of(context).go('/reglas');
+                GoRouter.of(context).go('/games');
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
