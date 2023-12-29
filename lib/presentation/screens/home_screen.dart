@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nunkxdos/infrastructure/models/player_models.dart';
 import 'package:nunkxdos/presentation/providers/player_provider.dart';
+import 'package:nunkxdos/presentation/providers/vidas_iniciales_provider.dart';
 
 class PlayerSelectionScreen extends ConsumerStatefulWidget {
   @override
@@ -32,6 +33,9 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     List<Player> players = ref.watch(playerProvider);
+    int _selectedLives = ref.watch(initialLivesProvider.state).state;
+
+    
 
     void _removePlayer(int index) {
       ref.read(playerProvider.notifier).removePlayer(index);
@@ -254,6 +258,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
             ElevatedButton(
               onPressed: () {
                 ref.read(playerProvider.notifier).setLivesForAll(_selectedLives);
+
                 
                 // Opcional: Imprimir la información de los jugadores
                 final updatedPlayers = ref.read(playerProvider);
