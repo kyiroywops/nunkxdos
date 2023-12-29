@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nunkxdos/presentation/providers/gamemode_provider.dart';
 import 'package:video_player/video_player.dart';
 
-enum GameMode { quick, custom }
-
-final gameModeProvider = StateProvider<GameMode>((ref) {
-  return GameMode.quick; // Valor por defecto
-});
 
 class InicialHomeScreen extends ConsumerStatefulWidget {
   @override

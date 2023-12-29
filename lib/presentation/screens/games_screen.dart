@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nunkxdos/infrastructure/models/game_models.dart';
+import 'package:nunkxdos/presentation/providers/gamemode_provider.dart';
+import 'package:nunkxdos/presentation/widgets/boton_atras.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GamesScreen extends ConsumerWidget {
   // URL de tu comunidad en Discord
   final String discordUrl = 'https://discord.gg/tuComunidad';
+  
 
   // Método para abrir el enlace de Discord
   void _launchDiscord(BuildContext context) async {
@@ -100,30 +103,35 @@ class GamesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gameMode = ref.watch(gameModeProvider.state).state;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.onBackground,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-        title: Text('Selecciona un Juego'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              icon: Icon(Icons.discord,
-                  color:
-                      Colors.white), // Asegúrate de tener este ícono disponible
-              onPressed: () => _launchDiscord(context),
+          backgroundColor: Theme.of(context).colorScheme.onBackground,
+          leading: BotonAtras(),
+          title: Text('Selecciona un Juego'),
+          actions: [
+            Container(
+              margin: EdgeInsets.only(right: 8), // Espacio entre el contenedor y el botón de Discord
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.brown.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                gameMode == GameMode.custom ? 'Personalizada' : 'Rápida',
+                style: TextStyle(color: Colors.white, fontFamily: 'Lexend'),
+              ),
             ),
-          ),
-        ],
-      ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                icon: Icon(Icons.discord, color: Colors.white),
+                onPressed: () => _launchDiscord(context),
+              ),
+            ),
+          ],
+        ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16), // Padding exterior aumentado
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

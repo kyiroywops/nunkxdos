@@ -12,6 +12,8 @@ class PlayerSelectionScreen extends ConsumerStatefulWidget {
 }
 
 class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
+
+  int _selectedLives = 3; // Un valor por defecto para las vidas
   final TextEditingController _nameController = TextEditingController();
   String _selectedAvatar =
       'assets/images/avatars/avatar1.png'; // Ruta al avatar por defecto
@@ -19,15 +21,11 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
   void _addPlayer() {
     final String name = _nameController.text;
     if (name.isNotEmpty && _selectedAvatar.isNotEmpty) {
-      // Utiliza ref.read para obtener el notifier y luego asigna el nuevo estado
-      ref.read(playerProvider.notifier).update((state) => [
-            ...state,
-            Player(name: name, avatar: _selectedAvatar),
-          ]);
-      _nameController
-          .clear(); // Limpiar el campo de texto después de agregar un jugador
-      _selectedAvatar =
-          'assets/images/avatars/avatar1.png'; // Restablecer el avatar seleccionado
+      ref.read(playerProvider.notifier).addPlayer(
+        Player(name: name, avatar: _selectedAvatar, lives: _selectedLives),
+      );
+      _nameController.clear();
+      _selectedAvatar = 'assets/images/avatars/avatar1.png';
     }
   }
 
@@ -36,10 +34,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
     List<Player> players = ref.watch(playerProvider);
 
     void _removePlayer(int index) {
-      ref.read(playerProvider.notifier).update((state) {
-        // Crea una nueva lista sin el jugador que quieres eliminar
-        return List<Player>.from(state)..removeAt(index);
-      });
+      ref.read(playerProvider.notifier).removePlayer(index);
     }
 
     return Scaffold(
@@ -63,9 +58,55 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: const EdgeInsets.fromLTRB(40, 0, 40, 40),
         child: Column(
           children: [
+            Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text('Vida de todos los jugadores', style: TextStyle(color: Colors.white,
+            fontFamily: 'Lexend',
+            fontWeight: FontWeight.w700
+            
+            )),
+          ), 
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(4, (index) {
+              int numLives = index + 1;
+              bool isSelected = numLives == _selectedLives;
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: isSelected ? Colors.orange : Color(0xFF46383b), // Cambia el color si está seleccionado
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: isSelected ? 10 : 5, // Elevación más pronunciada si está seleccionado
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    side: isSelected
+                        ? BorderSide(color: Colors.orangeAccent, width: 2) // Borde si está seleccionado
+                        : null,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedLives = numLives;
+                    });
+                  },
+                  child: Text(
+                    '$numLives ❤️',
+                    style: TextStyle(
+                      fontFamily: 'Lexend',
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.white : Colors.grey[200], // Cambia el color del texto si está seleccionado
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -166,6 +207,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                     horizontal: 16, vertical: 10), // Padding interior del botón
               ),
             ),
+         
             SizedBox(height: 30),
             const Center(
               child: Text(
@@ -211,6 +253,14 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                ref.read(playerProvider.notifier).setLivesForAll(_selectedLives);
+                
+                // Opcional: Imprimir la información de los jugadores
+                final updatedPlayers = ref.read(playerProvider);
+                for (var player in updatedPlayers) {
+                  print('Jugador: ${player.name}, Vidas: ${player.lives}');
+                }
+
                 // Navegar a la pantalla de reglas
                 GoRouter.of(context).go('/games');
               },
