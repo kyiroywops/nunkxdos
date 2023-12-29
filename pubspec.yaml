@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.4.9
   go_router: ^13.0.0
+  swipe_cards: ^2.0.0+1
+  swipeable_card_stack: ^0.0.5
   url_launcher: ^6.2.2
 
 dev_dependencies:
