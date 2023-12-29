@@ -46,9 +46,16 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
       backgroundColor: Color(0xFF002D40),
       appBar: AppBar(
         backgroundColor: Color(0xFF002D40),
+       leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.white, size: 20,),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        padding: EdgeInsets.only(left: 16), // Agrega padding a la izquierda del icono
+      ), // Esto cambiará el color del botón de retroceso a blanco
         title: Text(
-          'Selecciona tus jugadores',
-          style: TextStyle(fontWeight: FontWeight.w800, fontFamily: 'ReadexPro', color: Color(0xFF1AA6B7)
+          'Arma tu grupo',
+          style: TextStyle(fontWeight: FontWeight.w800, fontFamily: 'Lexend', color: Color(0xFF1AA6B7)
 
               // Aplica negrita al texto
               // Puedes añadir más estilos si lo deseas, como el tamaño de la fuente o el color
@@ -82,7 +89,10 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                     hintText: 'Nombre del jugador',
                     hintStyle: TextStyle(
                         color: Colors.white
-                            .withOpacity(0.5)), // Hint en blanco con opacidad
+                            .withOpacity(0.5),
+                            fontFamily: 'Lexend',
+                            fontWeight: FontWeight.w500
+                            ), // Hint en blanco con opacidad
                     border: InputBorder.none, // Sin borde
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -142,7 +152,8 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Agregar jugador',
-                  style: TextStyle(color: Colors.white), // Letra blanca
+                  style: TextStyle(color: Colors.white,
+                  fontFamily: 'Lexend', fontWeight: FontWeight.w600), // Letra blanca
                 ),
               ),
               style: ElevatedButton.styleFrom(
@@ -160,10 +171,10 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
               child: Text(
                 'Listado de Jugadores',
                 style: TextStyle(
-                  fontFamily: 'ReadexPro',
+                  fontFamily: 'Lexend',
                   color: Color(0xFF1AA6B7),
                   fontWeight:
-                      FontWeight.bold, // Si deseas que el texto esté en negrita
+                      FontWeight.w700, // Si deseas que el texto esté en negrita
                   fontSize:
                       24, // Puedes ajustar el tamaño según tus necesidades
                   // Otros estilos si son necesarios
@@ -208,7 +219,9 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                 child: Text(
                   'Listo',
                   style: TextStyle(
-                    color: Colors.white
+                    color: Colors.white,
+                    fontFamily: 'Lexend',
+                    fontWeight: FontWeight.w600
                     ), // Letra blanca
                 ),
               ),

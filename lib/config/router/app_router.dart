@@ -3,12 +3,21 @@ import 'package:go_router/go_router.dart';
 import 'package:nunkxdos/presentation/screens/category_screen.dart';
 import 'package:nunkxdos/presentation/screens/games_screen.dart';
 import 'package:nunkxdos/presentation/screens/home_screen.dart';
+import 'package:nunkxdos/presentation/screens/inicial_home_screen.dart';
+import 'package:nunkxdos/presentation/screens/introductions_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
+        builder: (BuildContext context, GoRouterState state) => InicialHomeScreen(),
+        
+
+
+    ),
+    GoRoute(
+      path: '/playerselection',
         builder: (BuildContext context, GoRouterState state) => PlayerSelectionScreen(),
         
 
@@ -17,6 +26,14 @@ final appRouter = GoRouter(
      GoRoute(
       path: '/games',
         builder: (BuildContext context, GoRouterState state) => GamesScreen(),
+      
+        
+
+
+    ),
+     GoRoute(
+      path: '/instructions',
+        builder: (BuildContext context, GoRouterState state) => InstructionsScreen(),
       
         
 

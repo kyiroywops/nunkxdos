@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nunkxdos/infrastructure/models/question_models.dart';
 import 'package:nunkxdos/presentation/providers/questions_provider.dart';
-import 'package:swipe_cards/swipe_cards.dart';
 
 class QuestionsScreen extends ConsumerStatefulWidget {
   final String category;
@@ -17,117 +16,113 @@ class QuestionsScreen extends ConsumerStatefulWidget {
 
 class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
   late List<Question> questions;
-  late int questionIndex;
+  late Color backgroundColor;
 
   @override
   void initState() {
     super.initState();
-    // Obtener las preguntas de la categoría y mezclarlas
-    questions = ref.read(questionsProvider(widget.category))..shuffle(Random());
-    questionIndex = 0; // Índice de la pregunta actual
+    resetQuestions();
   }
 
-  void _onCardSwiped() {
-    // Incrementar el índice de la pregunta para mostrar la siguiente
-    setState(() {
-      questionIndex++;
-    });
+  void resetQuestions() {
+    questions = ref.read(questionsProvider(widget.category))..shuffle(Random());
+    changeBackgroundColor();
+  }
 
-    if (questionIndex >= questions.length) {
-      // Se han acabado todas las preguntas
+  void changeBackgroundColor() {
+    setState(() {
+      backgroundColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+    });
+  }
+
+  void changeQuestion() {
+    if (questions.isNotEmpty) {
+      questions.removeLast();
+      changeBackgroundColor();
+    } else {
       _showFinishedDialog();
     }
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Salir'),
+            content: Text('Si sales ahora, la partida se terminará. ¿Quieres salir?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('No'),
+                onPressed: () => Navigator.of(context).pop(false), // No permite salir
+              ),
+              TextButton(
+                child: Text('Sí'),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // Permite salir
+                  resetQuestions(); // Opcional: resetear preguntas si es necesario
+                },
+              ),
+            ],
+          ),
+        )) ??
+        false; // Si el dialogo es cerrado por cualquier otra razón, no salir
   }
 
   void _showFinishedDialog() {
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('¡Bien hecho!'),
-          content: Text('Has respondido a todas las preguntas de esta categoría.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cerrar'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el diálogo
-                Navigator.of(context).pop(); // Regresar a la pantalla anterior
-              },
-            ),
-          ],
-        );
-      },
-    );
+      builder: (context) => AlertDialog(
+        title: Text('Fin de las preguntas'),
+        content: Text('Has pasado por todas las preguntas de esta categoría.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cerrar'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    ).then((_) => resetQuestions()); // Reiniciar preguntas cuando se cierra el diálogo
   }
 
   @override
   Widget build(BuildContext context) {
-    if (questions.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Preguntas de ${widget.category}')),
-        body: Center(child: Text('No hay preguntas disponibles.')),
-      );
-    }
-
-    final Question currentQuestion = questions[questionIndex];
-
-    return Scaffold(
-      appBar: AppBar(title: Text('Preguntas de ${widget.category}')),
-      body: SwipeCards(
-        matchEngine: MatchEngine(
-          swipeItems: questions.map((question) {
-            return SwipeItem(
-              content: question,
-              likeAction: _onCardSwiped,
-              nopeAction: _onCardSwiped,
-              superlikeAction: _onCardSwiped,
-            );
-          }).toList(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Preguntas de ${widget.category}'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () async {
+              if (await _onWillPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
         ),
-        // En tu método itemBuilder dentro de SwipeCards
-itemBuilder: (BuildContext context, int index) {
-  return Center(
-    child: Container(
-      width: MediaQuery.of(context).size.width * 0.8, // 80% del ancho de la pantalla
-      height: MediaQuery.of(context).size.height * 0.5, // 50% de la altura de la pantalla
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7), // Fondo negro con opacidad
-        borderRadius: BorderRadius.circular(20), // Bordes redondeados
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 4,
-            blurRadius: 10,
-            offset: Offset(0, 2), // Sombra ligeramente hacia abajo
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            questions[index].category.toUpperCase(),
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 20),
-          Text(
-            questions[index].content,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.9), // Texto blanco con un poco de opacidad
-              fontSize: 18,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-},
-        onStackFinished: _showFinishedDialog, // Se llama cuando se han deslizado todas las tarjetas
+        backgroundColor: backgroundColor,
+        body: questions.isEmpty
+            ? Center(child: Text('No hay más preguntas.'))
+            : GestureDetector(
+                onHorizontalDragEnd: (DragEndDetails details) {
+                  if (details.primaryVelocity! > 0) {
+                    changeQuestion();
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(30),
+                  child: Text(
+                    questions.last.content,
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_forward),
+          onPressed: changeQuestion,
+        ),
       ),
     );
   }
