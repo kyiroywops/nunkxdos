@@ -125,14 +125,17 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
     onWillPop: _onWillPop,
     child: Scaffold(
       appBar: AppBar(
-        title: Text('Preguntas de ${widget.category}'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () async {
-            if (await _onWillPop()) {
-              Navigator.of(context).pop();
-            }
-          },
+        backgroundColor: backgroundColor,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white, size: 23),
+            onPressed: () async {
+              if (await _onWillPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
         ),
       ),
       backgroundColor: backgroundColor,
@@ -142,19 +145,22 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
             padding: EdgeInsets.all(16.0),
             child: Text(
               'Nunca Nunca',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontSize: 32, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w900),
             ),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Text(
-              widget.category,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30, 3, 30, 3),
+              child: Text(
+                widget.category,
+                style: TextStyle(fontSize: 15, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w700),
+              ),
             ),
           ),
           // Aquí continuarás con el resto del contenido...
@@ -175,14 +181,14 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
                         children: [
                           Text(
                             questions.last.content,
-                            style: TextStyle(fontSize: 24, color: Colors.white),
+                            style: TextStyle(fontSize: 24, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center,
                           ),
                           if (gameMode == GameMode.custom) ...[
                             SizedBox(height: 20),
                             Text(
                               'Jugadores',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w800),
                             ),
                             Expanded(
                               child: ListView.builder(

@@ -42,9 +42,10 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFF002D40),
+      backgroundColor: Theme.of(context).colorScheme.onBackground,
+
       appBar: AppBar(
-        backgroundColor: Color(0xFF002D40),
+          backgroundColor: Theme.of(context).colorScheme.onBackground,
        leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Colors.white, size: 20,),
         onPressed: () {
@@ -54,7 +55,8 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
       ), // Esto cambiará el color del botón de retroceso a blanco
         title: Text(
           'Arma tu grupo',
-          style: TextStyle(fontWeight: FontWeight.w800, fontFamily: 'Lexend', color: Color(0xFF1AA6B7)
+          style: TextStyle(fontWeight: FontWeight.w800, fontFamily: 'Lexend', color: Theme.of(context).colorScheme.background,
+
 
               // Aplica negrita al texto
               // Puedes añadir más estilos si lo deseas, como el tamaño de la fuente o el color
@@ -172,7 +174,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                       decoration: isSelected
                           ? BoxDecoration(
                               border: Border.all(
-                                color: Color(0xffF56A79), // Color del borde cuando está seleccionado
+                                color: Colors.orange, // Color del borde cuando está seleccionado
                                 width: 3, // Ancho del borde
                               ),
                               shape: BoxShape.circle, // Forma circular para el borde
@@ -202,7 +204,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff1AA6B7).withOpacity(0.30), // Fondo negro
+                backgroundColor: Theme.of(context).colorScheme.background.withOpacity(0.50), // Fondo negro
                 foregroundColor: Colors.white, // Color del texto y del ícono
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30), // Bordes redondeados
@@ -213,12 +215,12 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
             ),
          
             SizedBox(height: 30),
-            const Center(
+            Center(
               child: Text(
                 'Listado de Jugadores',
                 style: TextStyle(
                   fontFamily: 'Lexend',
-                  color: Color(0xFF1AA6B7),
+                  color: Theme.of(context).colorScheme.background,
                   fontWeight:
                       FontWeight.w700, // Si deseas que el texto esté en negrita
                   fontSize:
@@ -272,7 +274,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Listo',
+                  'Jugar',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Lexend',
