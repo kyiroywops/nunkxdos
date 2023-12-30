@@ -78,7 +78,7 @@ class _InicialHomeScreenState extends ConsumerState<InicialHomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Partida normal',
+                    'Partida rápida',
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Lexend',
@@ -139,7 +139,7 @@ class _InicialHomeScreenState extends ConsumerState<InicialHomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'como jugar',
+                    'cómo jugar',
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Lexend',

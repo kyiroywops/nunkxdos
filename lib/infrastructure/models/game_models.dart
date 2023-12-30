@@ -1,17 +1,19 @@
 import 'dart:ui';
 
 class Game {
-  final Color color;
-  final String category; // Usaremos category en lugar de route
   final String name;
+  final String category;
   final String subtitle;
   final String emoji;
+  final Color color;
+  final bool isPremium; // Nueva propiedad
 
   Game({
-    required this.color,
-    required this.category, // Cambio aquí
     required this.name,
+    required this.category,
     required this.subtitle,
     required this.emoji,
+    required this.color,
+    this.isPremium = false, // Valor predeterminado falso
   });
 }

@@ -1,6 +1,7 @@
 // lib/presentation/screens/player_selection_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nunkxdos/infrastructure/models/player_models.dart';
@@ -19,21 +20,40 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
   String _selectedAvatar =
       'assets/images/avatars/avatar1.png'; // Ruta al avatar por defecto
 
-  void _addPlayer() {
-    final String name = _nameController.text;
-    if (name.isNotEmpty && _selectedAvatar.isNotEmpty) {
-      ref.read(playerProvider.notifier).addPlayer(
-        Player(name: name, avatar: _selectedAvatar, lives: _selectedLives),
-      );
-      _nameController.clear();
-      _selectedAvatar = 'assets/images/avatars/avatar1.png';
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
     List<Player> players = ref.watch(playerProvider);
     int _selectedLives = ref.watch(initialLivesProvider.state).state;
+
+
+
+    void _addPlayer() {
+      if (players.length >= 30) {
+        // Mostrar algún mensaje de error o deshabilitar el botón de agregar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No se pueden agregar más de 30 jugadores')),
+        );
+        return;
+      }
+      
+      final String name = _nameController.text;
+      if (name.isNotEmpty && _selectedAvatar.isNotEmpty) {
+        ref.read(playerProvider.notifier).addPlayer(
+          Player(name: name, avatar: _selectedAvatar, lives: _selectedLives),
+        );
+        _nameController.clear();
+        _selectedAvatar = 'assets/images/avatars/avatar1.png';
+      }
+    }
+        // Cuando el usuario selecciona un número de vidas, actualizamos el estado local y el provider
+    void _handleLifeSelection(int numLives) {
+      setState(() {
+        _selectedLives = numLives;
+      });
+      ref.read(initialLivesProvider.state).state = numLives; // Aquí actualizamos el provider
+    }
 
     
 
@@ -84,7 +104,9 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: ElevatedButton(
+                  
                   style: ElevatedButton.styleFrom(
+                    
                     primary: isSelected ? Colors.orange : Color(0xFF46383b), // Cambia el color si está seleccionado
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -96,11 +118,8 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                         ? BorderSide(color: Colors.orangeAccent, width: 2) // Borde si está seleccionado
                         : null,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _selectedLives = numLives;
-                    });
-                  },
+                   onPressed: () => _handleLifeSelection(numLives),
+          // ...
                   child: Text(
                     '$numLives ❤️',
                     style: TextStyle(
@@ -129,6 +148,12 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                 ),
                 child: TextField(
                   controller: _nameController,
+                   inputFormatters: [
+                      LengthLimitingTextInputFormatter(20), // Limita la longitud del input a 20 caracteres
+                      FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
+                      
+
+                    ],
                   style: const TextStyle(
                       color: Colors.white), // Texto blanco para el input
                   cursorColor: Colors.white, // Color del cursor a blanco
@@ -194,7 +219,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: _addPlayer,
+              onPressed: players.length >= 20 ? null : _addPlayer,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

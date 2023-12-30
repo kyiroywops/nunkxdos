@@ -85,15 +85,16 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
     bool shouldPop = (await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Salir'),
-            content: Text('Si sales ahora, la partida se reiniciará. ¿Quieres salir?'),
+         
+            title: Text('Salir', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
+            content: Text('Si sales ahora, la partida se reiniciará. ¿Quieres salir?', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w500)),
             actions: <Widget>[
               TextButton(
-                child: Text('No'),
+                child: Text('No', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w800)),
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
-                child: Text('Sí'),
+                child: Text('Sí', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
                 onPressed: () => Navigator.of(context).pop(true),
               ),
             ],
@@ -175,7 +176,7 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
           // Aquí continuarás con el resto del contenido...
            Expanded(
             child: questions.isEmpty
-                ? Center(child: Text('No hay más preguntas.'))
+                ? Center(child: Text('No me quedan más nunca nunca. 🥲', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600, fontSize: 15, color: Colors.white),))
                 : GestureDetector(
                     onHorizontalDragEnd: (details) {
                       if (details.primaryVelocity! > 0) {
@@ -220,18 +221,21 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
                                       ),
                                       
                                     ),
-                                    trailing: IconButton(
-                                      icon: Icon(isSelectedForLifeLoss ? Icons.close : Icons.check, color: Colors.white),
-                                      onPressed: () {
-                                        setState(() {
-                                          if (isSelectedForLifeLoss) {
-                                          selectedPlayersForLifeLoss.remove(player.name); // Deseleccionar
-                                        } else {
-                                          selectedPlayersForLifeLoss.add(player.name); // Seleccionarpérdida de vida
-                                          }
-                                        });
-                                      },
-                                  ));
+                                    trailing: player.lives > 0 // Solo mostramos la "X" si el jugador tiene vidas
+                                      ? IconButton(
+                                          icon: Icon(isSelectedForLifeLoss ? Icons.close : Icons.check, color: Colors.white),
+                                          onPressed: () {
+                                            setState(() {
+                                              if (isSelectedForLifeLoss) {
+                                                selectedPlayersForLifeLoss.remove(player.name); // Deseleccionar
+                                              } else {
+                                                selectedPlayersForLifeLoss.add(player.name); // Seleccionar para pérdida de vida
+                                              }
+                                            });
+                                          },
+                                        )
+                                      : null, // Si no tiene vidas, no mostramos ningún botón
+                                  );
                                 },
                               ),
                             ),

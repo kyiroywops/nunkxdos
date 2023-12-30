@@ -42,7 +42,9 @@ class GamesScreen extends ConsumerWidget {
         category: 'ilegal',
         name: 'ilegal',
         subtitle: 'revelaciones atrevidas y al borde de la ley',
-        emoji: '🚔'),
+        emoji: '🚔',
+        isPremium: true,
+        ),
     Game(
         color: Color(0xFF1AA6B7),
         category: 'ebrios',
@@ -104,12 +106,14 @@ class GamesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameMode = ref.watch(gameModeProvider.state).state;
+
+    
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.onBackground,
           leading: BotonAtras(),
-          title: Text('Selecciona un Juego'),
           actions: [
             Container(
               margin: EdgeInsets.only(right: 8), // Espacio entre el contenedor y el botón de Discord
@@ -142,52 +146,80 @@ class GamesScreen extends ConsumerWidget {
         itemCount: games.length,
         itemBuilder: (context, index) {
           var game = games[index];
-          return GestureDetector(
-            onTap: () {
-              // Aquí pasamos la categoría seleccionada a la ruta. 
-              // Por ejemplo, si tuvieras una ruta '/questions', podrías pasar la categoría como un parámetro.
-              GoRouter.of(context).push('/questions', extra: game.category);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(16), // Padding interior aumentado
-              decoration: BoxDecoration(
-                color: game.color.withOpacity(0.7),
-                borderRadius:
-                    BorderRadius.circular(30), // Bordes más redondeados
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2), // Color de sombra
-                    spreadRadius: 0,
-                    blurRadius: 10, // Nivel de desenfoque de la sombra
-                    offset: Offset(0, 4), // Posición de la sombra
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(game.emoji, style: TextStyle(fontSize: 44)),
-                  SizedBox(height: 4), // Espacio entre elementos
-                  Text(game.name,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontFamily: 'Lexend',
-                          fontWeight: FontWeight.w900)),
-                  SizedBox(height: 4),
-                  Text(game.subtitle,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.white.withOpacity(0.9),
-                        fontFamily: 'Lexend',
-                        fontWeight: FontWeight.w500,
-                      )),
-                ],
-              ),
+       
+       return GestureDetector(
+        onTap: () {
+          if (game.isPremium) {
+            _showUnlockDialog(context, game);
+          } else {
+            GoRouter.of(context).push('/questions', extra: game.category);
+          }
+        },
+        child: Opacity(
+          opacity: game.isPremium ? 0.5 : 1.0, // Juegos premium más opacos
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: game.color.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
-          );
+            child: Stack(
+              alignment: Alignment.center, // Centra los elementos dentro del Stack
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(game.emoji, style: TextStyle(fontSize: 44)),
+                    SizedBox(height: 4),
+                    Text(game.name, style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w900)),
+                    SizedBox(height: 4),
+                    Text(game.subtitle, style: TextStyle(fontSize: 11, color: Colors.white.withOpacity(0.9), fontFamily: 'Lexend', fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                if (game.isPremium) Align(
+                  alignment: Alignment.topRight, // Alinea el candado en el centro del Stack
+
+                  child: Icon(Icons.lock, size: 30, color: Colors.white),
+ 
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
         },
       ),
     );
   }
 }
+
+void _showUnlockDialog(BuildContext context, Game game) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Desbloquear Juego'),
+        content: Text('Este juego está bloqueado. Paga \$2 mensuales o \$8 para desbloquearlo para siempre.'),
+        actions: [
+          TextButton(
+            child: Text('Cancelar'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          TextButton(
+            child: Text('Pagar'),
+            onPressed: () {
+              // Lógica para manejar el pago
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }

@@ -14,16 +14,16 @@ class BotonAtras extends StatelessWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Confirmación'),
-        content: Text('¿Quieres volver a la página de inicio y reiniciar los datos?'),
+        title: Text('Confirmación', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
+        content: Text('¿Quieres volver a la página de inicio y reiniciar los datos?', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w400)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('No'),
+            child: Text('No', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w800)),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Sí'),
+            child: Text('Sí', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
           ),
         ],
       ),
