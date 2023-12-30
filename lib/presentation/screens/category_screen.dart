@@ -30,15 +30,18 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
     backgroundColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
    
     
-    loadNewQuestions();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        loadNewQuestions();
+      });
     
   }
 
-   void loadNewQuestions() {
-    // Cargar preguntas inmediatamente
-    var newQuestions = ref.read(questionsProvider(widget.category));
+  void loadNewQuestions() {
+    // Obtenemos todas las preguntas para la categoría y mezclamos
+    List<Question> newQuestions = List.from(ref.read(questionsProvider(widget.category)));
+    newQuestions.shuffle(Random());
     setState(() {
-      questions = newQuestions..shuffle(Random());
+      questions = newQuestions;
     });
   }
 
@@ -65,12 +68,18 @@ class _QuestionsScreenState extends ConsumerState<QuestionsScreen> {
     }
   }
 
-   void getNewQuestions() {
-    questions = ref.read(questionsProvider(widget.category));
-    questions.shuffle(Random());
-    changeBackgroundColor();
-    setState(() {});
-  }
+  void restartGame() {
+  // Este es el método que reiniciará el juego
+  setState(() {
+    // Reiniciamos las vidas de los jugadores
+    int initialLives = ref.read(initialLivesProvider.state).state;
+    ref.read(playerProvider.notifier).resetLives(initialLives);
+    // Recargamos las preguntas
+    loadNewQuestions();
+  });
+}
+
+
 
   Future<bool> _onWillPop() async {
     bool shouldPop = (await showDialog<bool>(
