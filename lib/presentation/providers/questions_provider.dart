@@ -1,29 +1,37 @@
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nunkxdos/infrastructure/datasources/question_service.dart';
 import 'package:nunkxdos/infrastructure/models/question_models.dart';
 
-class QuestionsNotifier extends StateNotifier<List<Question>> {
-  QuestionsNotifier() : super([]);
+class QuestionsNotifier extends StateNotifier<AsyncValue<List<Question>>> {
+  final QuestionService _questionService;
+  var _isLoading = false;
 
-  void loadQuestions(String category) {
-    // Lista simulada de todas las preguntas
-    List<Question> allQuestions = [
-      Question(category: 'normal', content: '1'),
-      Question(category: 'normal', content: '2'),
-      Question(category: 'normal', content: '3'),
-      Question(category: 'normal', content: '4'),
-      Question(category: 'sexual', content: 'Yo nunca nunca he...'),
-      // Agrega más preguntas aquí...
-    ];
-
-    // Filtrar preguntas por categoría
-    List<Question> filteredQuestions = allQuestions.where((question) => question.category == category).toList();
-    state = filteredQuestions..shuffle(Random());
+  QuestionsNotifier(this._questionService, String category)
+      : super(AsyncValue.loading()) {
+    loadQuestions(category);
+  }
+ Future<void> loadQuestions(String category) async {
+  state = AsyncValue.loading();
+  try {
+    List<Question> categoryQuestions =
+        await _questionService.loadQuestions(category);
+    state = AsyncValue.data(categoryQuestions..shuffle(Random()));
+  } catch (e, stack) { // Aquí capturas también el StackTrace del error
+    state = AsyncValue.error(e, stack); // Y aquí lo pasas como segundo argumento
   }
 }
+}
 
-final questionsProvider =
-    StateNotifierProvider.family<QuestionsNotifier, List<Question>, String>(
-  (ref, category) => QuestionsNotifier()..loadQuestions(category),
+final questionServiceProvider = Provider<QuestionService>((ref) {
+  return QuestionService();
+});
+
+final questionsProvider = StateNotifierProvider.family<QuestionsNotifier,
+    AsyncValue<List<Question>>, String>(
+  (ref, category) {
+    final questionService = ref.watch(questionServiceProvider);
+    return QuestionsNotifier(questionService, category);
+  },
 );

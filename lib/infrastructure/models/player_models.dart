@@ -1,7 +1,7 @@
 class Player {
   final String name;
   final String avatar;
-  int lives;
+  final int lives; // Haciéndolo final para asegurar la inmutabilidad
 
   Player({required this.name, required this.avatar, required this.lives});
 

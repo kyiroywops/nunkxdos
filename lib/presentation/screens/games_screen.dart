@@ -4,25 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:nunkxdos/infrastructure/models/game_models.dart';
 import 'package:nunkxdos/presentation/providers/gamemode_provider.dart';
 import 'package:nunkxdos/presentation/widgets/boton_atras.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:nunkxdos/presentation/widgets/boton_discord.dart';
 
 class GamesScreen extends ConsumerWidget {
   // URL de tu comunidad en Discord
-  final String discordUrl = 'https://discord.gg/tuComunidad';
   
-
-  // Método para abrir el enlace de Discord
-  void _launchDiscord(BuildContext context) async {
-    if (await canLaunch(discordUrl)) {
-      await launch(discordUrl);
-    } else {
-      // Mostrar error o manejar la situación
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No se pudo abrir el enlace de Discord')),
-      );
-    }
-  }
-
   final List<Game> games = [
     // Añade tus juegos aquí
     Game(
@@ -127,13 +113,20 @@ class GamesScreen extends ConsumerWidget {
                 style: TextStyle(color: Colors.white, fontFamily: 'Lexend'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: IconButton(
-                icon: Icon(Icons.discord, color: Colors.white),
-                onPressed: () => _launchDiscord(context),
-              ),
+           Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Icon(Icons.discord, color: Colors.white,),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DiscordDialog(discordUrl: 'https://discord.gg/EHqWWN59'); // Coloca aquí tu URL de Discord
+                  },
+                );
+              },
             ),
+          ),
           ],
         ),
       body: GridView.builder(
@@ -156,7 +149,7 @@ class GamesScreen extends ConsumerWidget {
           }
         },
         child: Opacity(
-          opacity: game.isPremium ? 0.5 : 1.0, // Juegos premium más opacos
+          opacity: game.isPremium ? 1.0 : 1.0, // Juegos premium más opacos
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
