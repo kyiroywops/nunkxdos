@@ -38,32 +38,39 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
                 });
               },
               children: <Widget>[
+              _buildPageContent(
+                icon: Icons.local_bar, // Un ícono sugerido para representar la interacción de preguntas y respuestas.
+                title: 'Descubre la Cultura Chupística', // Título que invita a los usuarios a aprender sobre el juego.
+                text: ' Conduce a una serie de preguntas que deben ser respondidas en turno. Responde correctamente y '
+                      'pasa al siguiente jugador en sentido horario, pero si te equivocas, bebe un sorbo y pasa a la siguiente pregunta.'
+              ),
                 _buildPageContent(
-                  icon: Icons.group_add,
-                  title: 'Arma tu grupo',
-                  text: 'Agrega a tus amigos a unirse y asignarles cartas aleatoriamente para comenzar la partida.',
+                  icon: Icons.flash_on, // Ícono que representa rapidez o acción inmediata.
+                  title: 'Modo Rápido', // Título que indica al usuario que esta página es para el juego rápido.
+                  text: 'Selecciona una categoría y empieza a jugar de inmediato. '
+                        'En este modo, las preguntas aparecerán una tras otra sin demora, '
+                        'permitiéndote disfrutar del juego de forma ágil y dinámica. '
+                        'Ideal para cuando quieres una partida rápida o estás corto de tiempo.', // Descripción detallada del modo rápido.
                 ),
-                _buildPageContent(
-                  icon: Icons.card_giftcard,
-                  title: 'La Pirámide',
-                  text: 'Voltea cada carta de la pirámide empezando desde la base. Si tienes la carta, puedes pasarle un sorbo a otro jugador o tomarlo tú mismo.',
-                ),
-                _buildPageContent(
-                  icon: Icons.emoji_events,
-                  title: 'Carta final',
-                  text: 'La última carta se voltea al final. El jugador que la tenga debe tomar al seco. ¡Buena suerte!',
-                ),
+              _buildPageContent(
+                icon: Icons.people, // Ícono sugerido para el modo personalizado.
+                title: 'Modo Personalizado', // Título para la instrucción del modo personalizado.
+                text: 'Crea tu grupo y cada jugador inicia con tres vidas. '
+                      'Responde a las preguntas correctamente para sobrevivir. '
+                      'Elige a quien falló para restarle una vida. '
+                      '¡El último en pie se corona campeón!', // Descripción de cómo jugar en el modo personalizado.
+              ),
               ],
             ),
             Positioned(
-              right: 20,
-              bottom: 20,
+              right: 30,
+              bottom: 35,
               child: _buildNextButton(),
             ),
             Positioned(
               left: 0,
               right: 0,
-              bottom: 10,
+              bottom: 20,
               child: _buildPageIndicator(),
             ),
           ],
@@ -81,6 +88,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
           Icon(icon, size: 48.0, color: Colors.white),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24.0,
               color: Colors.grey[100],
@@ -147,7 +155,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Text(
           _currentPage < 2 ? 'Siguiente' : 'Finalizar',
           style: TextStyle(

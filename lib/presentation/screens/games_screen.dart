@@ -9,82 +9,80 @@ import 'package:nunkxdos/presentation/widgets/boton_discord.dart';
 class GamesScreen extends ConsumerWidget {
   // URL de tu comunidad en Discord
   
+
+
+
   final List<Game> games = [
     // Añade tus juegos aquí
     Game(
         color: Color(0xFF46383b),
         category: 'normal',
         name: 'normal',
-        subtitle: 'confesiones casuales para romper el hielo',
+        subtitle: 'Juego estándar de Cultura Chupística con preguntas generales y retos divertidos.',
         emoji: '😜'),
     Game(
         color: Color(0xFFF56A79),
-        category: 'sexual',
-        name: 'sexual',
-        subtitle: 'descubre secretos con un toque picante',
-        emoji: '🤫'),
-    Game(
-        color: Color(0xFFFF414D),
-        category: 'ilegal',
-        name: 'ilegal',
-        subtitle: 'revelaciones atrevidas y al borde de la ley',
-        emoji: '🚔',
-        isPremium: true,
-        ),
-    Game(
-        color: Color(0xFF1AA6B7),
-        category: 'ebrios',
-        name: 'ebrios',
-        subtitle: 'verdades desternillantes entre tragos y risas',
-        emoji: '🍺'),
-    Game(
-        color: Color(0xFFFFB15C),
-        category: 'locuras',
-        name: 'locuras',
-        subtitle: 'anécdotas locas y momentos de pura insensatez',
-        emoji: '🐵'),
-    Game(
-        color: Color(0xFF8C8EB8),
-        category: 'infancia',
-        name: 'infancia',
-        subtitle: 'recuerdos inocentes de los días de juventud',
-        emoji: '🪁'),
-    Game(
-        color: Color(0xFF1D152D),
-        category: 'navidad',
-        name: 'navidad',
-        subtitle: 'confesiones envueltas en espíritu festivo',
-        emoji: '🎁'),
-    Game(
-        color: Color(0xFFDA2864),
-        category: 'noches',
-        name: 'noches',
-        subtitle: 'historias inolvidables de noches para recordar',
-        emoji: '🎊'),
-    Game(
-        color: Color(0xFF9AE1E2),
-        category: 'autos',
-        name: 'autos',
-        subtitle: 'aventuras y travesuras sobre ruedas',
-        emoji: '🚗'),
+        category: 'marcas',
+        name: 'marcas',
+        subtitle: 'Nombra diferentes marcas en cada ronda. Quien repita o no sepa, ¡bebe!',
+
+        emoji: '🏷️'),
     Game(
         color: Color(0xFF16A5A3),
-        category: 'exs',
-        name: 'ex parejas',
-        subtitle: 'anécdotas de romances que quedaron en la historia',
-        emoji: '💔'),
+        category: 'series',
+        name: 'series',
+        subtitle: 'Duelo de conocimientos sobre series televisivas populares.',
+        emoji: '📺'),
     Game(
-        color: Color(0xFF46383b),
-        category: 'computador',
-        name: 'juegos de computador',
-        subtitle: 'secretos de sesiones de juego y misiones nocturnas',
-        emoji: '🎮'),
+        color: Color(0xFFFF414D),
+        category: 'peliculas',
+        name: 'películas',
+        subtitle: 'Competencia cinéfila: comparte y descubre películas icónicas.',
+        emoji: '🎬'),
     Game(
-        color: Color(0xFF9F9BBC),
-        category: 'futbol',
-        name: 'futbol',
-        subtitle: 'pasiones y faltas dentro y fuera del campo',
-        emoji: '⚽'),
+        color: Color(0xFF1AA6B7),
+        category: 'actores',
+        name: 'actores',
+        subtitle: '¿Quién sabe más? Un desafío sobre estrellas de la pantalla grande.',
+        emoji: '🌟'),
+    Game(
+        color: Color(0xFFFFB15C),
+        category: 'deportes',
+        name: 'deportes',
+        subtitle: 'Desafío para los amantes del deporte, desde fútbol hasta tenis.',
+        emoji: '🏅'),
+    Game(
+        color: Color(0xFF8C8EB8),
+        category: 'musica',
+        name: 'música',
+        subtitle: 'Batalla de bandas y solistas: un juego para melómanos.',
+        emoji: '🎵'),
+    Game(
+        color: Color(0xFF1D152D),
+        category: 'historia',
+        name: 'historia',
+        subtitle: 'Viaja en el tiempo con preguntas sobre eventos históricos.',
+        emoji: '🏰'),
+    Game(
+        color: Color(0xFFDA2864),
+        category: 'geografia',
+        name: 'geografía',
+        subtitle: 'Explora el mundo con desafíos sobre países y ciudades.',
+        emoji: '🌍'),
+    Game(
+        color: Color(0xFF9AE1E2),
+        category: 'ciudades',
+        name: 'ciudades',
+        subtitle: 'Un tour por las ciudades más icónicas del mundo.',
+        emoji: '🏙️'),
+    Game(
+    color: Color(0xFFA4C639), // Un color que evoque la temática de la película
+    category: 'senor_anillos',
+    name: 'El Señor de los Anillos',
+    subtitle: 'Desafíos y trivia sobre la épica saga de El Señor de los Anillos.',
+    emoji: '🧝‍♂️'),
+    // colocar un anillo como emoji
+    
 
     // Más juegos...
   ];
@@ -113,7 +111,7 @@ class GamesScreen extends ConsumerWidget {
                 style: TextStyle(color: Colors.white, fontFamily: 'Lexend'),
               ),
             ),
-           Padding(
+         Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: Icon(Icons.discord, color: Colors.white,),
@@ -170,11 +168,11 @@ class GamesScreen extends ConsumerWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(game.emoji, style: TextStyle(fontSize: 44)),
+                    Text(game.emoji, style: TextStyle(fontSize: 37)),
                     SizedBox(height: 4),
-                    Text(game.name, style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w900)),
+                    Text(game.name, style: TextStyle(fontSize: 17, color: Colors.white, fontFamily: 'Lexend', fontWeight: FontWeight.w900)),
                     SizedBox(height: 4),
-                    Text(game.subtitle, style: TextStyle(fontSize: 11, color: Colors.white.withOpacity(0.9), fontFamily: 'Lexend', fontWeight: FontWeight.w500)),
+                    Text(game.subtitle, style: TextStyle(fontSize: 8, color: Colors.white.withOpacity(0.9), fontFamily: 'Lexend', fontWeight: FontWeight.w500)),
                   ],
                 ),
                 if (game.isPremium) Align(

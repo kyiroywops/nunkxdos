@@ -36,6 +36,7 @@ flutter:
     - assets/images/avatars/
     - assets/images/games/
     - assets/images/videos/
+    - assets/jsons/
 
   fonts:
     - family: Lexend
