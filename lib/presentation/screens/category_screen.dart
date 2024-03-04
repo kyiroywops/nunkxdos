@@ -242,8 +242,7 @@ void _showFinishedDialog() {
           },
             child: Text('Salir', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
             style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-              onPrimary: Colors.white,
+              foregroundColor: Colors.white, backgroundColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -305,8 +304,7 @@ void _showFinishedDialog() {
                     style: TextStyle(
                         fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
-                  onPrimary: Colors.white,
+                  foregroundColor: Colors.white, backgroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -372,8 +370,7 @@ void _showWinnerDialog(Player winner) {
           },
           child: Text('Cerrar partida', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
           style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-              onPrimary: Colors.white,
+              foregroundColor: Colors.white, backgroundColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -676,7 +673,7 @@ void handleLifeLoss() {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -705,7 +702,7 @@ void handleLifeLoss() {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),

@@ -148,8 +148,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
         }
       },
       style: TextButton.styleFrom(
-        primary: Colors.white,
-        backgroundColor: Colors.black.withOpacity(0.3),
+        foregroundColor: Colors.white, backgroundColor: Colors.black.withOpacity(0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

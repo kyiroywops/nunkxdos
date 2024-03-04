@@ -44,8 +44,7 @@ class BotonAtras extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(true),
             child: Text('Salir', style: TextStyle(fontFamily: 'Lexend', fontWeight: FontWeight.w600)),
             style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-              onPrimary: Colors.white,
+              foregroundColor: Colors.white, backgroundColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

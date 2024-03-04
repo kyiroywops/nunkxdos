@@ -412,7 +412,7 @@ class _PlayerSelectionScreenState extends ConsumerState<PlayerSelectionScreen> {
                     icon: Icon(Icons.play_arrow, color: Colors.white),
                     label: Text('Jugar', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
+                      backgroundColor: Colors.black,
                       padding: EdgeInsets.symmetric(
                         horizontal: screenSize.width *
                             0.05, // 5% del ancho de la pantalla
